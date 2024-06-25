@@ -14,16 +14,28 @@ export default function Model() {
   const scroll = useScroll()
 
   useEffect(() => {
+    console.log(animations)
+  }, [])
+
+
+  useEffect(() => {
     console.log(actions)
-    //@ts-ignore
-    actions["Experiment"].play().paused = true
+    animations.forEach(frame => {
+      //@ts-ignore
+     actions[frame.name].play().paused = true
+    })
+    
   }, [])
   useFrame(
-    () =>
-      //@ts-ignore
-      (actions["Experiment"].time =
+    () =>{
+      animations.forEach(frame => {
+
         //@ts-ignore
-        (actions["Experiment"].getClip().duration * scroll.offset) / 4)
+        (actions[frame.name].time =
+          //@ts-ignore
+          (actions[frame.name].getClip().duration * scroll.offset))
+      })
+    }
   )
   return (
     <group scale={40} ref={group}>
